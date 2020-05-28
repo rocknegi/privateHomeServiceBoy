@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "814238575534",
+    "firebase_url": "https://privatehomeservice2020.firebaseio.com",
+    "project_id": "privatehomeservice2020",
+    "storage_bucket": "privatehomeservice2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814238575534:android:5a7dd76fb6afd664fdf63f",
+        "android_client_info": {
+          "package_name": "com.privatehomeserviceboysapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "814238575534-doo587j62ecdbapjkhqkt56muje5u2r4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAng8s21i8BQyLN0su7kwpSA_jgQwYDGSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "814238575534-doo587j62ecdbapjkhqkt56muje5u2r4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "814238575534-4b8tq955f8hl9q4h2hm3e93in728nb0v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.privateHomeServicesManager"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814238575534:android:3e66483c87c6596cfdf63f",
+        "android_client_info": {
+          "package_name": "com.privatehomeservicesmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "814238575534-doo587j62ecdbapjkhqkt56muje5u2r4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAng8s21i8BQyLN0su7kwpSA_jgQwYDGSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "814238575534-doo587j62ecdbapjkhqkt56muje5u2r4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "814238575534-4b8tq955f8hl9q4h2hm3e93in728nb0v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.privateHomeServicesManager"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
