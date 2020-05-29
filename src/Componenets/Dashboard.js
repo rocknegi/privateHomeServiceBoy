@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Switch, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Switch, TextInput, PermissionsAndroid, Linking, Alert } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
+import Geolocation from '@react-native-community/geolocation';
 
 const boys = firestore().collection('Boys');
 
@@ -9,6 +10,7 @@ const Dashboard = () => {
     const [data, setData] = useState([]);
     const [incomingOrder, setIncomingOrder] = useState(null);
     const [action, setAction] = useState(false);
+    const [location,setLocation] = useState({latitude:0,longitude:0})
 
     const toggleSwitch = () => {
         setIsEnabled(isEnabled => !isEnabled);
@@ -51,6 +53,31 @@ const Dashboard = () => {
 
     const handleAccept = ()=> setAction(false)
     const handleReject = ()=> setIncomingOrder(null)
+    const openMap = async()=>{
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Private home services needs Location Permission',
+                    message:
+                        'Private home services needs Location Permission',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                Geolocation.getCurrentPosition(position => {
+                    setLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
+                });
+                Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${location.latitude+0.1},${location.longitude+0.1}`)
+            } else {
+                Alert.alert('Please grant location permission');
+            }
+        } catch (err) {
+            alert(err);
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -69,8 +96,8 @@ const Dashboard = () => {
             <View style={[styles.xAxis, { marginBottom: '0%' }]}>
                 <Text style={{ fontSize: 20, padding: 5, paddingLeft: 0 }}>Week Planner</Text>
             </View>
-            <View style={[styles.xAxis]}>
-                {/* <Text style={styles.text}></Text> */}
+            <View style={[styles.xAxis,{ marginLeft: 0,paddingHorizontal:8 }]}>
+                <Text style={[styles.text,]}>   </Text>
                 <Text style={styles.text}>Mo</Text>
                 <Text style={styles.text}>Di</Text>
                 <Text style={styles.text}>Mi</Text>
@@ -90,7 +117,7 @@ const Dashboard = () => {
                 <TextInput style={styles.text} placeholder="So" />
             </View>
             <View style={[styles.xAxis, { marginLeft: 0 }]}>
-                <Text style={styles.text}>18 {"\n"}  |{"\n"}01</Text>
+                <Text style={[styles.text]}>18 {"\n"}  |{"\n"}01</Text>
                 <TextInput style={styles.text} placeholder="Mo" />
                 <TextInput style={styles.text} placeholder="Di" />
                 <TextInput style={styles.text} placeholder="Mi" />
@@ -114,7 +141,7 @@ const Dashboard = () => {
                             <Text style={styles.text}>Duration : {item.duration} hrs</Text>
                             <Text style={styles.text}>Time : {item.time} hrs</Text>
                         </View>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={openMap}>
                             <Text style={styles.buttonText}>Route</Text>
                         </TouchableOpacity>
                         </View>
@@ -147,6 +174,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 5,
+        // paddingHorizontal:10
         // marginBottom: '7%'
     },
     yAxis: {
