@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore'
 import Geolocation from '@react-native-community/geolocation';
 
 const boys = firestore().collection('Boys');
+const orders = firestore().collection('Managers');
 
 const Dashboard = () => {
     const [isEnabled, setIsEnabled] = useState(true);
@@ -14,7 +15,7 @@ const Dashboard = () => {
 
     const toggleSwitch = () => {
         setIsEnabled(isEnabled => !isEnabled);
-        console.log(isEnabled)
+        // console.log(isEnabled)
         boys.doc('boy1').set({
             ...data,
             available:!isEnabled
@@ -25,34 +26,49 @@ const Dashboard = () => {
     //     phone:2294518795,
     //     available:false
     // })
-    boys.doc('boy1').collection('orders').doc('order').set({
-        time:1700,
-        duration:2,
-    })
+    // boys.doc('boy1').collection('orders').doc('order').set({
+    //     time:1700,
+    //     duration:2,
+    // })
 
     useEffect(() => {
         let data;
         return boys.doc('boy1').onSnapshot((snapshot) => {
             data = snapshot.data();
             setData(data);  
-            console.log(data.available)
+            // console.log(data.available)
             setIsEnabled(data.available);     
         });
     }, []);
 
     useEffect(()=>{
-        let data=[];
         return boys.doc('boy1').collection('orders').onSnapshot((snapshot) => {
+            let data=[];
+            let accepted = false;
            snapshot.forEach(doc=>{
             data.push(({ ...doc.data(), id: doc.id }))
            })
             setIncomingOrder(data); 
-            if(data.length>0)setAction(true) 
+
+            orders.doc(data[0].number.toString()).get().then(snapshot=>{
+                accepted=snapshot.data().accepted
+                if(data.length>0&&!accepted)setAction(true) 
+
+            })
         });
     },[])
 
-    const handleAccept = ()=> setAction(false)
-    const handleReject = ()=> setIncomingOrder(null)
+    const handleAccept = ()=> {
+        setAction(false);
+        orders.doc(incomingOrder[0].number.toString()).update({
+            // ...incomingOrder[0],
+            accepted:true
+        })
+    }
+    const handleReject = ()=> {
+        setAction(false) 
+        boys.doc('boy1').collection('orders').doc('order').delete();    
+    }
     const openMap = async()=>{
         try {
             const granted = await PermissionsAndroid.request(
@@ -70,7 +86,7 @@ const Dashboard = () => {
                 Geolocation.getCurrentPosition(position => {
                     setLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
                 });
-                Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${location.latitude+0.1},${location.longitude+0.1}`)
+                Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${location.latitude+0.02},${location.longitude+0.02}`)
             } else {
                 Alert.alert('Please grant location permission');
             }
@@ -138,7 +154,7 @@ const Dashboard = () => {
                     {incomingOrder.map(item=>(
                           <View style={{justifyContent:'space-around',flexDirection:'row'}}  key={item.time}>
                         <View>
-                            <Text style={styles.text}>Duration : {item.duration} hrs</Text>
+                            <Text style={styles.text}>Duration : {item.serviceTime} hrs</Text>
                             <Text style={styles.text}>Time : {item.time} hrs</Text>
                         </View>
                         <TouchableOpacity style={styles.button} onPress={openMap}>
