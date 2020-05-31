@@ -12,6 +12,7 @@ const Dashboard = () => {
     const [data, setData] = useState([]);
     const [incomingOrder, setIncomingOrder] = useState(null);
     const [action, setAction] = useState(false);
+    const [accepted, setAccepted] = useState(false);
     const [location,setLocation] = useState({latitude:0,longitude:0})
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -39,7 +40,7 @@ const Dashboard = () => {
             data = snapshot.data();
             setData(data);  
             // console.log(data.available)
-            setIsEnabled(data.available);     
+            if(data)(setIsEnabled(data.available))
         });
     }, []);
 
@@ -48,10 +49,9 @@ const Dashboard = () => {
             let data=[];
             let accepted = false;
            snapshot.forEach(doc=>{
-            data.push(({ ...doc.data(), id: doc.id }))
+            data.push({ ...doc.data()})
            })
             setIncomingOrder(data); 
-
             if(data.length>0){
                 orders.doc(data[0].number.toString()).get().then(snapshot=>{
                     accepted=snapshot.data().accepted
@@ -68,12 +68,18 @@ const Dashboard = () => {
             // ...incomingOrder[0],
             accepted:true
         });
+        setAccepted(true)
         toggleSwitch();
 
     }
     const handleReject = ()=> {
         setAction(false) 
         boys.doc('boy1').collection('orders').doc('order').delete();    
+    }
+    const handleComplted = ()=> {
+        setAccepted(false) 
+        boys.doc('boy1').collection('orders').doc('order').delete();  
+        toggleSwitch()  
     }
 
     const viewOrder = ()=>{
@@ -121,6 +127,7 @@ const Dashboard = () => {
                     onBackdropPress={toggleModal}
                     swipeDirection={['up', 'left', 'right', 'down']}
                 >
+                    <View>
                     {incomingOrder&&<View>
                         {incomingOrder.map(item=>(
                             <View key={item.balance} style={{ backgroundColor: '#fafafa',alignItems:'center',padding:10 }}>
@@ -139,6 +146,7 @@ const Dashboard = () => {
                             </Text>
                             </TouchableOpacity>
                     </View>}
+                    </View>
                 </Modal>
             <View style={[styles.xAxis, { marginBottom: '2%',marginLeft:10 }]}>
                 <Text style={{ fontSize: 20, padding: 10,textAlign:'left',flex:1,paddingLeft:0 }}>Boy1</Text>
@@ -214,6 +222,11 @@ const Dashboard = () => {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleReject} style={[styles.button,{backgroundColor:'#fafafa',borderColor:'#D87314',borderWidth:1}]}>
                             <Text style={[styles.buttonText,{color:'#000'}]}>Reject</Text>
+                            </TouchableOpacity>
+                        </View>}
+                        {accepted&&<View style={{justifyContent:'space-around',flexDirection:'row',marginTop:'10%'}}>
+                             <TouchableOpacity onPress={handleComplted} style={[styles.button,{backgroundColor:'#fafafa',borderColor:'#D87314',borderWidth:1}]}>
+                            <Text style={[styles.buttonText,{color:'#000'}]}>Completed</Text>
                             </TouchableOpacity>
                         </View>}
                     </View>
