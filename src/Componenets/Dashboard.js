@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Switch, TextInput, PermissionsAndroid, Linking, Alert } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 import Geolocation from '@react-native-community/geolocation';
+import Modal from 'react-native-modal';
 
 const boys = firestore().collection('Boys');
 const orders = firestore().collection('Managers');
@@ -12,6 +13,7 @@ const Dashboard = () => {
     const [incomingOrder, setIncomingOrder] = useState(null);
     const [action, setAction] = useState(false);
     const [location,setLocation] = useState({latitude:0,longitude:0})
+    const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleSwitch = () => {
         setIsEnabled(isEnabled => !isEnabled);
@@ -50,11 +52,13 @@ const Dashboard = () => {
            })
             setIncomingOrder(data); 
 
-            orders.doc(data[0].number.toString()).get().then(snapshot=>{
-                accepted=snapshot.data().accepted
-                if(data.length>0&&!accepted)setAction(true) 
-
-            })
+            if(data.length>0){
+                orders.doc(data[0].number.toString()).get().then(snapshot=>{
+                    accepted=snapshot.data().accepted
+                    if(data.length>0&&!accepted)setAction(true) 
+    
+                })
+            }
         });
     },[])
 
@@ -63,12 +67,22 @@ const Dashboard = () => {
         orders.doc(incomingOrder[0].number.toString()).update({
             // ...incomingOrder[0],
             accepted:true
-        })
+        });
+        toggleSwitch();
+
     }
     const handleReject = ()=> {
         setAction(false) 
         boys.doc('boy1').collection('orders').doc('order').delete();    
     }
+
+    const viewOrder = ()=>{
+        
+    }
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
     const openMap = async()=>{
         try {
             const granted = await PermissionsAndroid.request(
@@ -97,6 +111,35 @@ const Dashboard = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+                            <Modal
+                    isVisible={isModalVisible}
+                    // onModalShow={afterModalOpen}
+                    style={{
+                        justifyContent: 'center',
+                        // margin: 0,
+                    }}
+                    onBackdropPress={toggleModal}
+                    swipeDirection={['up', 'left', 'right', 'down']}
+                >
+                    {incomingOrder&&<View>
+                        {incomingOrder.map(item=>(
+                            <View key={item.balance} style={{ backgroundColor: '#fafafa',alignItems:'center',padding:10 }}>
+                                <Text style={styles.text}>Balance : {item.balance}</Text>
+                                <Text style={styles.text}>Champagne : {item.champagne}</Text>
+                                <Text style={styles.text}>Champagne Glass : {item.champagneGlass}</Text>
+                                <Text style={styles.text}>Delivery Time : {item.deliveryTime}</Text>
+                                <Text style={styles.text}>Hotess : {item.hotess}</Text>
+                                <Text style={styles.text}>Time : {item.time} hrs</Text>
+                                <Text style={styles.text}>Total : {item.total}</Text>
+                            </View>
+                        ))}
+                    <TouchableOpacity onPress={toggleModal} style={[styles.button, { margin: 10 }]}>
+                                <Text style={styles.buttonText}>
+                                    close
+                            </Text>
+                            </TouchableOpacity>
+                    </View>}
+                </Modal>
             <View style={[styles.xAxis, { marginBottom: '2%',marginLeft:10 }]}>
                 <Text style={{ fontSize: 20, padding: 10,textAlign:'left',flex:1,paddingLeft:0 }}>Boy1</Text>
                 <Text style={{ fontSize: 20, padding: 10 }}>Available?</Text>
@@ -110,7 +153,7 @@ const Dashboard = () => {
                 />
             </View>
             <View style={[styles.xAxis, { marginBottom: '0%' }]}>
-                <Text style={{ fontSize: 20, padding: 5, paddingLeft: 0 }}>Week Planner</Text>
+                <Text style={{ fontSize: 20, padding: 5, paddingLeft: 0,right:5 }}>Week Planner</Text>
             </View>
             <View style={[styles.xAxis,{ marginLeft: 0,paddingHorizontal:8 }]}>
                 <Text style={[styles.text,]}>   </Text>
@@ -159,6 +202,9 @@ const Dashboard = () => {
                         </View>
                         <TouchableOpacity style={styles.button} onPress={openMap}>
                             <Text style={styles.buttonText}>Route</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={toggleModal}>
+                            <Text style={styles.buttonText}>Order</Text>
                         </TouchableOpacity>
                         </View>
                     ))}
