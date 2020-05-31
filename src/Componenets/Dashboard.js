@@ -98,9 +98,9 @@ const Dashboard = () => {
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 Geolocation.getCurrentPosition(position => {
-                    setLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
+                    // setLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
+                    Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${position.coords.latitude},${position.coords.longitude}&destination=${position.coords.latitude+0.02},${position.coords.longitude+0.02}`)
                 });
-                Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${location.latitude+0.02},${location.longitude+0.02}`)
             } else {
                 Alert.alert('Please grant location permission');
             }
