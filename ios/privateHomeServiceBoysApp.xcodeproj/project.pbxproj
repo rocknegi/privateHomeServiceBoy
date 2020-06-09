@@ -16,6 +16,12 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* privateHomeServiceBoysAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* privateHomeServiceBoysAppTests.m */; };
+		089F3CB149EC4477840955DC /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00C2F40BF08E4E86A9F5C0E6 /* Arial.ttf */; };
+		1794EE59D05C4CED95FE5244 /* COMIC.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CD7DAE66DF549E0ADE8D41F /* COMIC.ttf */; };
+		1E845E6455264833BFD76B7E /* david.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 394CA72D9D20480B899A0F80 /* david.ttf */; };
+		82A742FA2FA045C09B80B400 /* DavidLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4BBB08CF8D474ACCB6EEA485 /* DavidLibre-Regular.ttf */; };
+		06A5BB727AFF427CBEEEC308 /* HT Gelateria W01 Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7281537528354EB798DD52A9 /* HT Gelateria W01 Regular.ttf */; };
+		C234448512844A8F8BCEE3ED /* HT Pizzeria W01 Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4F0F9BCD3D842B685654A29 /* HT Pizzeria W01 Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +57,12 @@
 		2D02E4901E0B4A5D006451C7 /* privateHomeServiceBoysApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "privateHomeServiceBoysApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		00C2F40BF08E4E86A9F5C0E6 /* Arial.ttf */ = {isa = PBXFileReference; name = "Arial.ttf"; path = "../src/assets/fonts/Arial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6CD7DAE66DF549E0ADE8D41F /* COMIC.ttf */ = {isa = PBXFileReference; name = "COMIC.ttf"; path = "../src/assets/fonts/COMIC.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		394CA72D9D20480B899A0F80 /* david.ttf */ = {isa = PBXFileReference; name = "david.ttf"; path = "../src/assets/fonts/david.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4BBB08CF8D474ACCB6EEA485 /* DavidLibre-Regular.ttf */ = {isa = PBXFileReference; name = "DavidLibre-Regular.ttf"; path = "../src/assets/fonts/DavidLibre-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7281537528354EB798DD52A9 /* HT Gelateria W01 Regular.ttf */ = {isa = PBXFileReference; name = "HT Gelateria W01 Regular.ttf"; path = "../src/assets/fonts/HT Gelateria W01 Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A4F0F9BCD3D842B685654A29 /* HT Pizzeria W01 Regular.ttf */ = {isa = PBXFileReference; name = "HT Pizzeria W01 Regular.ttf"; path = "../src/assets/fonts/HT Pizzeria W01 Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +152,7 @@
 				00E356EF1AD99517003FC87E /* privateHomeServiceBoysAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				A063858071284288A78EE52E /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -156,6 +169,20 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		A063858071284288A78EE52E /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				00C2F40BF08E4E86A9F5C0E6 /* Arial.ttf */,
+				6CD7DAE66DF549E0ADE8D41F /* COMIC.ttf */,
+				394CA72D9D20480B899A0F80 /* david.ttf */,
+				4BBB08CF8D474ACCB6EEA485 /* DavidLibre-Regular.ttf */,
+				7281537528354EB798DD52A9 /* HT Gelateria W01 Regular.ttf */,
+				A4F0F9BCD3D842B685654A29 /* HT Pizzeria W01 Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -295,6 +322,12 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				089F3CB149EC4477840955DC /* Arial.ttf in Resources */,
+				1794EE59D05C4CED95FE5244 /* COMIC.ttf in Resources */,
+				1E845E6455264833BFD76B7E /* david.ttf in Resources */,
+				82A742FA2FA045C09B80B400 /* DavidLibre-Regular.ttf in Resources */,
+				06A5BB727AFF427CBEEEC308 /* HT Gelateria W01 Regular.ttf in Resources */,
+				C234448512844A8F8BCEE3ED /* HT Pizzeria W01 Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
