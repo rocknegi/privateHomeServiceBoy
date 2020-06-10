@@ -99,6 +99,17 @@ export default class Map extends Component {
                         onDragEnd={(e) => this.setMarkerLocation(e.nativeEvent.coordinate)}
                     />
                 </MapView>
+                <View style={{
+                    position:'absolute',
+                    top:15,
+                    backgroundColor:PrimayColor,
+                    alignItems:'center',
+                    padding:5
+                }}>
+                    <Text
+                    style={{fontSize:15,textAlign:'center',color:'#fafafa'}}
+                    >Drag the marker to change the current location</Text>
+                </View>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText} onPress={this.confirmLocation}>Confirm Location</Text>
                 </TouchableOpacity>

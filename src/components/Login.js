@@ -21,17 +21,17 @@ export default class index extends Component {
     checkCreds = ()=>{
         let countryCode = '+237'
         let email = countryCode + this.state.username + '@domainName.com';
-        data.doc('POelJlDzmzSK7UYArrA6').get().then(data=>{
+        data.doc(email).get().then(data=>{
             if(data["_data"]===undefined)
             ToastAndroid.showWithGravity('User with this phone no does not exist',ToastAndroid.SHORT,ToastAndroid.BOTTOM)
 
-            // else if(data["_data"]["pass"]!=this.state.password)
-            // ToastAndroid.showWithGravity('Wrong password',ToastAndroid.SHORT,ToastAndroid.BOTTOM)
+            else if(data["_data"]["pass"]!=this.state.password)
+            ToastAndroid.showWithGravity('Wrong password',ToastAndroid.SHORT,ToastAndroid.BOTTOM)
             else {
                 this.props.navigation.navigate('Dashboard',{
-                    user:'POelJlDzmzSK7UYArrA6'
+                    user:email
                 })
-                AsyncStorage.setItem('user','POelJlDzmzSK7UYArrA6')
+                AsyncStorage.setItem('user',email)
             }
         })
        
@@ -67,6 +67,7 @@ export default class index extends Component {
                                 style={[styles.input,{textAlign:'center'}]}
                                 autoCapitalize='none'
                                 value={this.state.password}
+                                secureTextEntry={true}
                                 onChangeText={(value)=>this.setState({password:value})}
                             />
                         </View>

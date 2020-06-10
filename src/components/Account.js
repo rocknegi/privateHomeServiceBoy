@@ -154,7 +154,7 @@ export default class Account extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity style={[styles.buttonContainer, { marginTop: 20, marginHorizontal: '30%' }]} onPress={this.toggleMapModal}>
-                            <Text style={styles.buttonText}>Get Location</Text>
+                            <Text style={styles.buttonText}>Set Location</Text>
                         </TouchableOpacity>
                         
                         <ChangeUserData />
