@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, PermissionsAndroid, Linking, Alert, AsyncStorage, Dimensions, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, PermissionsAndroid, Linking, Alert, AsyncStorage, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 import Geolocation from '@react-native-community/geolocation';
 import Modal from 'react-native-modal';
@@ -164,9 +164,11 @@ const Dashboard = ({ navigation }) => {
                 </View>
             </Modal>
             <View style={styles.header}>
+                <TouchableWithoutFeedback onPress={()=>navigation.navigate('Account')}>
                 <Image
                     style={{ height: 25, width: 25, marginRight: 10 }}
                     source={require('../assets/images/user.webp')} />
+                </TouchableWithoutFeedback>
             </View>
             {/* <View style={[styles.xAxis, { marginBottom: '2%',marginLeft:10 }]}>
                 <Text style={{ fontSize: 20, padding: 10,textAlign:'left',flex:1,paddingLeft:0 }}>Boy1</Text>

@@ -10,13 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/geolocation": "^2.0.2",
+    "@react-native-community/geolocation": "2.0.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^7.0.1",
     "@react-native-firebase/firestore": "^7.0.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-maps": "0.27.1",
     "react-native-modal": "^11.5.6",
     "react-native-reanimated": "^1.8.0",
     "react-native-safe-area-context": "^1.0.2",
