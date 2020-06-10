@@ -52,14 +52,15 @@ export default class Account extends Component {
             ToastAndroid.showWithGravity('New pass can not be empty', ToastAndroid.SHORT, ToastAndroid.BOTTOM)
 
         else {
-            data.doc(user).get().then(doc => {
+            boys.doc(user).get().then(doc => {
+                console.log(doc.data())
                 if (doc["_data"] === undefined)
                     ToastAndroid.showWithGravity('Wrong old password', ToastAndroid.SHORT, ToastAndroid.BOTTOM)
                 else if (doc["_data"]["pass"] != this.state.password)
-                    ToastAndroid.showWithGravity('Wrong old password', ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+                    ToastAndroid.showWithGravity('Wrong old password2', ToastAndroid.SHORT, ToastAndroid.BOTTOM)
 
                 else {
-                    data.doc(user).update({
+                    boys.doc(user).update({
                         pass: this.state.newPassword
                     });
                     ToastAndroid.showWithGravity('password changed', ToastAndroid.LONG, ToastAndroid.BOTTOM)
@@ -80,7 +81,7 @@ export default class Account extends Component {
 
     saveData=async()=>{
         const user = await AsyncStorage.getItem('user');
-        console.log(user)
+        // console.log(user)
         boys.doc(user).update({
             lat:this.state.marker.latitude,
             long:this.state.marker.longitude

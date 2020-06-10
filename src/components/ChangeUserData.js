@@ -26,7 +26,6 @@ function ChangeUserData() {
     }, [user])
 
     const saveData = ()=>{
-        
     }
 
     return (
@@ -34,13 +33,13 @@ function ChangeUserData() {
             <View>
                 {data.map(item => (
                     <View key={item.name} style={{ flex: 0 }}>
-                        <DataInput data={item} />
+                        <DataInput data={item} user={user}/>
                     </View>
                 ))}
 
-                <TouchableOpacity style={[styles.buttonContainer, { marginTop: 10, marginHorizontal: '30%' }]} onPress={saveData}>
+                {/* <TouchableOpacity style={[styles.buttonContainer, { marginTop: 10, marginHorizontal: '30%' }]} onPress={saveData}>
                     <Text style={styles.buttonText}>Save Data</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </SafeAreaView>
     )

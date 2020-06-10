@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, PermissionsAndroid, Linking, Alert, AsyncStorage, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, PermissionsAndroid, Linking, Alert, AsyncStorage, Dimensions, ScrollView, TouchableWithoutFeedback, YellowBox } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 import Geolocation from '@react-native-community/geolocation';
 import Modal from 'react-native-modal';
 import { Switch } from 'react-native-switch';
 
+console.disableYellowBox = true;
 const PrimayColor = '#D87314'
 
 const boys = firestore().collection('Boys');
@@ -28,8 +29,7 @@ const Dashboard = ({ navigation }) => {
     const toggleSwitch = () => {
         setIsEnabled(isEnabled => !isEnabled);
         // console.log(isEnabled)
-        boys.doc(user).set({
-            ...data,
+        boys.doc(user).update({
             available: !isEnabled
         })
     }
@@ -70,7 +70,8 @@ const Dashboard = ({ navigation }) => {
             if (data.length > 0) {
                 orders.doc(data[0].number.toString()).get().then(snapshot => {
                     accepted = snapshot.data().accepted
-                    if (data.length > 0 && !accepted) setAction(true)
+                    // if (data.length > 0 && !accepted) alert(action)
+                    // else alert(action)
 
                 })
             }
@@ -79,22 +80,26 @@ const Dashboard = ({ navigation }) => {
 
     const handleAccept = () => {
         // setAction(false);
-        if(incomingOrder.length>0){
+        // alert(accepted)
+        if(incomingOrder.length>0&&!accepted){
             orders.doc(incomingOrder[0].number.toString()).update({
                 // ...incomingOrder[0],
                 accepted: true
             });
+           
             boys.doc(user).update({
                 // ...incomingOrder[0],
                 FBK: true
             });
+            // toggleReject()
         }
+
         // setAccepted(true)
         // toggleSwitch();
 
     }
     const handleReject = () => {
-        if(incomingOrder.length>0){
+        if(incomingOrder.length>0&&!rejected){
             orders.doc(incomingOrder[0].number.toString()).update({
                 // ...incomingOrder[0],
                 accepted: false
@@ -103,7 +108,9 @@ const Dashboard = ({ navigation }) => {
                 // ...incomingOrder[0],
                 FBK: false
             });
+            // toggleAccept()
         }
+
     }
     const handleComplted = () => {
         setAccepted(false)
@@ -357,7 +364,7 @@ const Dashboard = ({ navigation }) => {
                 <Switch
                     onValueChange={toggleAccept}
                     value={accepted}
-                    disabled={false}
+                    disabled={incomingOrder.length>0?false:true}
                     activeText={'On'}
                     inActiveText={'Off'}
                     circleSize={32}
@@ -384,7 +391,7 @@ const Dashboard = ({ navigation }) => {
                 <Switch
                     onValueChange={toggleReject}
                     value={rejected}
-                    disabled={false}
+                    disabled={incomingOrder.length>0?false:true}
                     circleSize={32}
                     barHeight={35}
                     circleBorderWidth={1}

@@ -1,13 +1,24 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, SafeAreaView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, Text, TextInput, SafeAreaView, TouchableOpacity, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+import firestore from '@react-native-firebase/firestore';
+
 import { styles } from './theme/theme';
 
-export default function DataInput({ data }) {
+export default function DataInput({ data,user }) {
 
     const [gender, setGender] = useState(data.gender);
     const [image, setImage] = useState(data.image);
     const [phone, setPhone] = useState((data.phone).toString());
-
+    const boys = firestore().collection('Boys');
+    // console.log(user)
+    const saveData = ()=>{
+        boys.doc(user).update({
+            gender,
+            image,
+            phone
+        })
+        Keyboard.dismiss
+    }
     return (
         <SafeAreaView>
 
@@ -35,7 +46,9 @@ export default function DataInput({ data }) {
                             onChangeText={(value) => setPhone(value)}
                         />
                     </View>
-
+                    <TouchableOpacity style={[styles.button,{padding:10,width:'30%'}]} onPress={saveData}>
+                    <Text style={styles.buttonText}>Save</Text>
+                </TouchableOpacity>
         </SafeAreaView>
     )
 }
