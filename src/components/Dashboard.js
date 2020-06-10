@@ -84,6 +84,10 @@ const Dashboard = ({ navigation }) => {
                 // ...incomingOrder[0],
                 accepted: true
             });
+            boys.doc(user).update({
+                // ...incomingOrder[0],
+                FBK: true
+            });
         }
         // setAccepted(true)
         // toggleSwitch();
@@ -94,6 +98,10 @@ const Dashboard = ({ navigation }) => {
             orders.doc(incomingOrder[0].number.toString()).update({
                 // ...incomingOrder[0],
                 accepted: false
+            });
+            boys.doc(user).update({
+                // ...incomingOrder[0],
+                FBK: false
             });
         }
     }
@@ -179,6 +187,10 @@ const Dashboard = ({ navigation }) => {
                 </View>
             </Modal>
             <View style={styles.header}>
+            <Image
+                    style={{ flex:0.82,height: 45, width: 45, marginRight: 10,resizeMode:'contain',alignSelf:'center' }}
+                    source={require('../assets/images/logo_white.png')}
+                />
                 <TouchableWithoutFeedback onPress={()=>navigation.navigate('Account')}>
                 <Image
                     style={{ height: 25, width: 25, marginRight: 10 }}
@@ -414,7 +426,10 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: PrimayColor,
         padding: 5,
-        alignItems: 'flex-end'
+        justifyContent:'flex-end',
+        alignItems: 'flex-end',
+        height:40,
+        flexDirection:'row'
     },
     xAxis: {
         alignItems: 'flex-start',
