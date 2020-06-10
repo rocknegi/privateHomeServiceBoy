@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, Switch, TextInput, PermissionsAndroid, Linking, Alert } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, PermissionsAndroid, Linking, Alert, AsyncStorage, Dimensions, ScrollView } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 import Geolocation from '@react-native-community/geolocation';
 import Modal from 'react-native-modal';
+import { Switch } from 'react-native-switch';
+
 const PrimayColor = '#D87314'
 
 const boys = firestore().collection('Boys');
 const orders = firestore().collection('Managers');
+const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
     const [isEnabled, setIsEnabled] = useState(true);
     const [data, setData] = useState([]);
     const [incomingOrder, setIncomingOrder] = useState(null);
@@ -16,11 +20,14 @@ const Dashboard = () => {
     const [accepted, setAccepted] = useState(false);
     const [location, setLocation] = useState({ latitude: 0, longitude: 0 })
     const [isModalVisible, setModalVisible] = useState(false);
+    const [user, setUser] = useState('');
+
+    // const user = navigation.getParam('user')
 
     const toggleSwitch = () => {
         setIsEnabled(isEnabled => !isEnabled);
         // console.log(isEnabled)
-        boys.doc('boy1').set({
+        boys.doc(user).set({
             ...data,
             available: !isEnabled
         })
@@ -34,19 +41,25 @@ const Dashboard = () => {
     //     time:1700,
     //     duration:2,
     // })
+    const getUser = async () => {
+        const user = await AsyncStorage.getItem('user');
+        setUser(user);
+    }
 
     useEffect(() => {
         let data;
-        return boys.doc('boy1').onSnapshot((snapshot) => {
+        getUser();
+        return boys.doc(user).onSnapshot((snapshot) => {
             data = snapshot.data();
             setData(data);
             // console.log(data.available)
             if (data) (setIsEnabled(data.available))
         });
-    }, []);
+    }, [user]);
 
     useEffect(() => {
-        return boys.doc('boy1').collection('orders').onSnapshot((snapshot) => {
+        getUser();
+        return boys.doc(user).collection('orders').onSnapshot((snapshot) => {
             let data = [];
             let accepted = false;
             snapshot.forEach(doc => {
@@ -61,7 +74,7 @@ const Dashboard = () => {
                 })
             }
         });
-    }, [])
+    }, [user])
 
     const handleAccept = () => {
         setAction(false);
@@ -75,11 +88,11 @@ const Dashboard = () => {
     }
     const handleReject = () => {
         setAction(false)
-        boys.doc('boy1').collection('orders').doc('order').delete();
+        boys.doc(user).collection('orders').doc('order').delete();
     }
     const handleComplted = () => {
         setAccepted(false)
-        boys.doc('boy1').collection('orders').doc('order').delete();
+        boys.doc(user).collection('orders').doc('order').delete();
         toggleSwitch()
     }
 
@@ -118,6 +131,7 @@ const Dashboard = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <ScrollView style={{flex:1}}>
             <Modal
                 isVisible={isModalVisible}
                 // onModalShow={afterModalOpen}
@@ -166,6 +180,59 @@ const Dashboard = () => {
                     style={{ marginTop: 10, marginRight: 5 }}
                 />
             </View> */}
+
+            <View style={{ marginTop: 15,alignItems:'center',}}>
+                <Switch
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
+                    disabled={false}
+                    activeText={'On'}
+                    inActiveText={'Off'}
+                    circleSize={32}
+                    barHeight={35}
+                    circleBorderWidth={1}
+                    backgroundActive={'#a7eb9b'}
+                    backgroundInactive={'#a7eb9b'}
+                    circleActiveColor={'#57d941'}
+                    circleInActiveColor={'#57d941'}
+                    changeValueImmediately={true}
+                    renderInsideCircle={() => <Text style={{color:'#fafafa',fontSize:11}}>ON</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
+                    changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
+                    innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
+                    renderActiveText={false}
+                    renderInActiveText={false}
+                    switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                    switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+                    switchWidthMultiplier={2} // multipled by the `circleSize` prop to calculate total width of the Switch
+                    switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
+
+                />
+                </View>
+                <View style={{ marginTop: 15,alignItems:'center',marginBottom:10}}>
+                <Switch
+                    onValueChange={toggleSwitch}
+                    value={!isEnabled}
+                    disabled={false}
+                    circleSize={32}
+                    barHeight={35}
+                    circleBorderWidth={1}
+                    backgroundActive={'#f7867e'}
+                    backgroundInactive={'#f7867e'}
+                    circleActiveColor={'red'}
+                    circleInActiveColor={'red'}
+                    changeValueImmediately={true}
+                    renderInsideCircle={() => <Text style={{color:'#fafafa',fontSize:11}}>OFF</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
+                    changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
+                    innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
+                    renderActiveText={false}
+                    renderInActiveText={false}
+                    switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                    switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+                    switchWidthMultiplier={2} // multipled by the `circleSize` prop to calculate total width of the Switch
+                    switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
+
+                />
+            </View>
             <View style={[{ marginBottom: '0%', backgroundColor: '#97b54a', marginLeft: 0 }]}>
                 <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 10, textAlign: 'center', color: '#fafafa' }}>Day/Week Planner</Text>
             </View>
@@ -182,28 +249,28 @@ const Dashboard = () => {
             <View style={[styles.xAxis, { marginLeft: 0 }]}>
                 <Text style={styles.text}>14 {"\n"}  |{"\n"}18</Text>
                 <TextInput style={styles.text} placeholder="Mo" />
-                <TextInput style={styles.text} placeholder="Di" />
-                <TextInput style={styles.text} placeholder="Mi" />
-                <TextInput style={styles.text} placeholder="Do" />
-                <TextInput style={styles.text} placeholder="Fr" />
-                <TextInput style={styles.text} placeholder="Sa" />
-                <TextInput style={styles.text} placeholder="So" />
+                <TextInput style={styles.text} placeholder="TUE" />
+                <TextInput style={styles.text} placeholder="WED" />
+                <TextInput style={styles.text} placeholder="THU" />
+                <TextInput style={styles.text} placeholder="FR" />
+                <TextInput style={styles.text} placeholder="SA" />
+                <TextInput style={styles.text} placeholder="SO" />
             </View>
             <View style={styles.divider}></View>
             <View style={[styles.xAxis, { marginLeft: 0 }]}>
                 <Text style={[styles.text]}>19 {"\n"}  |{"\n"}01</Text>
                 <TextInput style={styles.text} placeholder="Mo" />
-                <TextInput style={styles.text} placeholder="Di" />
-                <TextInput style={styles.text} placeholder="Mi" />
-                <TextInput style={styles.text} placeholder="Do" />
-                <TextInput style={styles.text} placeholder="Fr" />
-                <TextInput style={styles.text} placeholder="Sa" />
-                <TextInput style={styles.text} placeholder="So" />
+                <TextInput style={styles.text} placeholder="TUE" />
+                <TextInput style={styles.text} placeholder="WED" />
+                <TextInput style={styles.text} placeholder="THU" />
+                <TextInput style={styles.text} placeholder="FR" />
+                <TextInput style={styles.text} placeholder="SA" />
+                <TextInput style={styles.text} placeholder="SO" />
             </View>
             <View style={styles.divider}></View>
             <View style={[styles.divider, { marginTop: '10%', backgroundColor: PrimayColor }]}></View>
             <View style={{ alignItems: 'center' }}>
-                <TouchableOpacity style={[styles.button, { margin: 10 }]}>
+                <TouchableOpacity style={[styles.button, { margin: 10 }]} onPress={toggleModal}>
                     <Text style={[styles.buttonText, { fontSize: 20 }]}>
                         Incoming Request
                     </Text>
@@ -218,19 +285,21 @@ const Dashboard = () => {
             {incomingOrder &&
                 <View>
                     {incomingOrder.map(item => (
-                        <View style={{ justifyContent: 'space-evenly', flexDirection: 'row', backgroundColor: '#a8caff' }} key={item.time}>
-                            <Text style={styles.tableRow}>1257</Text>
+                        <View style={{ flexDirection: 'row', backgroundColor: '#a8caff' }} key={item.time}>
+                            <Text style={styles.tableRow}>{item.orderNo}</Text>
                             <Text style={styles.tableRow}>{item.time} hrs</Text>
                             <Text style={styles.tableRow}>{item.serviceTime} hrs</Text>
-                            <View style={{
-                                flex: 1,
-                                borderWidth: 2,
-                                borderColor: '#fafafa',
-                                // padding: 5
-                            }}>
-                                <Image style={{width:30,height:30,alignSelf:'center'}} 
-                            source={require('../assets/images/map.png')}/>
-                            </View>
+                            <TouchableOpacity
+                                onPress={openMap}
+                                style={{
+                                    flex: 1,
+                                    borderWidth: 2,
+                                    borderColor: '#fafafa',
+                                    // padding: 5
+                                }}>
+                                <Image style={{ width: 30, height: 30, alignSelf: 'center' }}
+                                    source={require('../assets/images/map.png')} />
+                            </TouchableOpacity>
                             {/* <TouchableOpacity style={[styles.button,{padding:0}]} onPress={openMap}> */}
 
                             {/* </TouchableOpacity> */}
@@ -239,7 +308,7 @@ const Dashboard = () => {
                         </TouchableOpacity> */}
                         </View>
                     ))}
-                    {action && <View style={{ justifyContent: 'space-around', flexDirection: 'row', marginTop: '10%' }}>
+                    {/* {action && <View style={{ justifyContent: 'space-around', flexDirection: 'row', marginTop: '10%' }}>
                         <TouchableOpacity style={styles.button} onPress={handleAccept}>
                             <Text style={styles.buttonText}>Accept</Text>
                         </TouchableOpacity>
@@ -251,10 +320,68 @@ const Dashboard = () => {
                         <TouchableOpacity onPress={handleComplted} style={[styles.button, { backgroundColor: '#fafafa', borderColor: '#D87314', borderWidth: 1 }]}>
                             <Text style={[styles.buttonText, { color: '#000' }]}>Completed</Text>
                         </TouchableOpacity>
-                    </View>}
+                    </View>} */}
+                    <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                        <Text style={{alignSelf:'center',fontSize:20}}>Accept or reject Job</Text>
+                        <View>
+                        <View style={{ marginTop: 15,alignItems:'center',}}>
+                <Switch
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
+                    disabled={false}
+                    activeText={'On'}
+                    inActiveText={'Off'}
+                    circleSize={32}
+                    barHeight={35}
+                    circleBorderWidth={1}
+                    backgroundActive={'#a7eb9b'}
+                    backgroundInactive={'#a7eb9b'}
+                    circleActiveColor={'#57d941'}
+                    circleInActiveColor={'#57d941'}
+                    changeValueImmediately={true}
+                    renderInsideCircle={() => <Text style={{color:'#fafafa',fontSize:11}}>ON</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
+                    changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
+                    innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
+                    renderActiveText={false}
+                    renderInActiveText={false}
+                    switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                    switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+                    switchWidthMultiplier={2} // multipled by the `circleSize` prop to calculate total width of the Switch
+                    switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
+
+                />
+                </View>
+                <View style={{ marginTop: 15,alignItems:'center',marginBottom:10}}>
+                <Switch
+                    onValueChange={toggleSwitch}
+                    value={!isEnabled}
+                    disabled={false}
+                    circleSize={32}
+                    barHeight={35}
+                    circleBorderWidth={1}
+                    backgroundActive={'#f7867e'}
+                    backgroundInactive={'#f7867e'}
+                    circleActiveColor={'red'}
+                    circleInActiveColor={'red'}
+                    changeValueImmediately={true}
+                    renderInsideCircle={() => <Text style={{color:'#fafafa',fontSize:11}}>OFF</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
+                    changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
+                    innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
+                    renderActiveText={false}
+                    renderInActiveText={false}
+                    switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                    switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+                    switchWidthMultiplier={2} // multipled by the `circleSize` prop to calculate total width of the Switch
+                    switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
+
+                />
+            </View>
+                        </View>
+                    </View>
                 </View>
 
             }
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -289,7 +416,7 @@ const styles = StyleSheet.create({
     text: {
         flexWrap: 'wrap',
         marginBottom: '10%',
-        fontSize: 18,
+        fontSize: 15,
     },
     button: {
         backgroundColor: '#D87314',
@@ -321,10 +448,10 @@ const styles = StyleSheet.create({
         padding: 5
     },
     tableRow: {
-        flex: 1,
+        flex: 0.9,
         textAlign: 'center',
         borderWidth: 2,
         borderColor: '#fafafa',
-        padding: 5
+        padding: 5,
     }
 })
