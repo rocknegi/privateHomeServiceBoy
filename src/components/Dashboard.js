@@ -18,6 +18,7 @@ const Dashboard = ({ navigation }) => {
     const [incomingOrder, setIncomingOrder] = useState(null);
     const [action, setAction] = useState(false);
     const [accepted, setAccepted] = useState(false);
+    const [rejected,setRejected ] = useState(false);
     const [location, setLocation] = useState({ latitude: 0, longitude: 0 })
     const [isModalVisible, setModalVisible] = useState(false);
     const [user, setUser] = useState('');
@@ -77,18 +78,24 @@ const Dashboard = ({ navigation }) => {
     }, [user])
 
     const handleAccept = () => {
-        setAction(false);
-        orders.doc(incomingOrder[0].number.toString()).update({
-            // ...incomingOrder[0],
-            accepted: true
-        });
-        setAccepted(true)
-        toggleSwitch();
+        // setAction(false);
+        if(incomingOrder.length>0){
+            orders.doc(incomingOrder[0].number.toString()).update({
+                // ...incomingOrder[0],
+                accepted: true
+            });
+        }
+        // setAccepted(true)
+        // toggleSwitch();
 
     }
     const handleReject = () => {
-        setAction(false)
-        boys.doc(user).collection('orders').doc('order').delete();
+        if(incomingOrder.length>0){
+            orders.doc(incomingOrder[0].number.toString()).update({
+                // ...incomingOrder[0],
+                accepted: false
+            });
+        }
     }
     const handleComplted = () => {
         setAccepted(false)
@@ -103,6 +110,14 @@ const Dashboard = ({ navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+   const toggleAccept = ()=>{
+        setAccepted(!accepted);
+        handleAccept();
+    }
+    const toggleReject = ()=>{
+        setRejected(!rejected);
+        handleReject();
+    }
     const openMap = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -328,8 +343,8 @@ const Dashboard = ({ navigation }) => {
                         <View>
                         <View style={{ marginTop: 15,alignItems:'center',}}>
                 <Switch
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
+                    onValueChange={toggleAccept}
+                    value={accepted}
                     disabled={false}
                     activeText={'On'}
                     inActiveText={'Off'}
@@ -355,8 +370,8 @@ const Dashboard = ({ navigation }) => {
                 </View>
                 <View style={{ marginTop: 15,alignItems:'center',marginBottom:10}}>
                 <Switch
-                    onValueChange={toggleSwitch}
-                    value={!isEnabled}
+                    onValueChange={toggleReject}
+                    value={rejected}
                     disabled={false}
                     circleSize={32}
                     barHeight={35}
