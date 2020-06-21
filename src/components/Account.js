@@ -15,19 +15,19 @@ export default class Account extends Component {
     state = {
         password: '',
         newPassword: '',
-        isModalVisible:false,
-        isMapModalVisible:false,
+        isModalVisible: false,
+        isMapModalVisible: false,
         marker: {
             latitude: 0,
             longitude: 0,
         },
     }
 
-    async componentDidMount (){
+    async componentDidMount() {
         const user = await AsyncStorage.getItem('user');
 
-        boys.doc(user).get().then(doc=>{
-            if(doc.data().lat!==0){
+        boys.doc(user).get().then(doc => {
+            if (doc.data().lat !== 0) {
                 this.setState({
                     marker: {
                         latitude: doc.data().lat,
@@ -37,14 +37,14 @@ export default class Account extends Component {
             }
         })
 
-        
+
     }
 
     toggleModal = () => {
-        this.setState({isModalVisible:!this.state.isModalVisible})
+        this.setState({ isModalVisible: !this.state.isModalVisible })
     }
     toggleMapModal = () => {
-        this.setState({isMapModalVisible:!this.state.isMapModalVisible})
+        this.setState({ isMapModalVisible: !this.state.isMapModalVisible })
     }
     checkCreds = async () => {
         const user = await AsyncStorage.getItem('user');
@@ -76,15 +76,15 @@ export default class Account extends Component {
                 latitude: location.latitude,
                 longitude: location.longitude
             }
-        },()=>this.saveData())
+        }, () => this.saveData())
     };
 
-    saveData=async()=>{
+    saveData = async () => {
         const user = await AsyncStorage.getItem('user');
         // console.log(user)
         boys.doc(user).update({
-            lat:this.state.marker.latitude,
-            long:this.state.marker.longitude
+            lat: this.state.marker.latitude,
+            long: this.state.marker.longitude
         })
 
     }
@@ -120,20 +120,20 @@ export default class Account extends Component {
                         />
                     </View>
                     <TouchableOpacity style={[styles.buttonContainer, { marginTop: 10, marginHorizontal: '30%' }]} onPress={this.checkCreds}>
-                            <Text style={styles.buttonText}>Change</Text>
-                        </TouchableOpacity>
+                        <Text style={styles.buttonText}>Change</Text>
+                    </TouchableOpacity>
                 </Modal>
                 <Modal
-                        // style={{ maxHeight:'80%',paddingTop:'10%'}}
-                        isVisible={this.state.isMapModalVisible}
-                        // onBackdropPress={this.toggleMapModal}
-                    >
-                        <Map 
-                         coords={this.state.marker}
-                         saveMarkerLocation={this.saveMarkerLocation}
-                         toggle={this.toggleMapModal} 
-                         />
-                    </Modal>
+                    // style={{ maxHeight:'80%',paddingTop:'10%'}}
+                    isVisible={this.state.isMapModalVisible}
+                // onBackdropPress={this.toggleMapModal}
+                >
+                    <Map
+                        coords={this.state.marker}
+                        saveMarkerLocation={this.saveMarkerLocation}
+                        toggle={this.toggleMapModal}
+                    />
+                </Modal>
                 <View style={[styles.header, { height: 50 }]}>
                     <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
                         <Image
@@ -145,23 +145,23 @@ export default class Account extends Component {
                 </View>
 
                 <KeyboardAvoidingView
-                 behavior={Platform.OS == "ios" ? "padding" : "height"}
-                 style={{flex:1}}
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}
                 >
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={{ marginTop: '5%',flex:1 }}>
-                    <TouchableOpacity style={[styles.buttonContainer, { marginTop: 10, marginHorizontal: '30%' }]} onPress={this.toggleModal}>
-                            <Text style={styles.buttonText}>Change password</Text>
-                        </TouchableOpacity>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View style={{ marginTop: '5%', flex: 1 }}>
+                            <TouchableOpacity style={[styles.buttonContainer, { marginTop: 10, marginHorizontal: '30%' }]} onPress={this.toggleModal}>
+                                <Text style={styles.buttonText}>Change password</Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity style={[styles.buttonContainer, { marginTop: 20, marginHorizontal: '30%' }]} onPress={this.toggleMapModal}>
-                            <Text style={styles.buttonText}>Set Location</Text>
-                        </TouchableOpacity>
-                        
-                        <ChangeUserData />
-  
-                    </View>
-                </TouchableWithoutFeedback>
+                            <TouchableOpacity style={[styles.buttonContainer, { marginTop: 20, marginHorizontal: '30%' }]} onPress={this.toggleMapModal}>
+                                <Text style={styles.buttonText}>Set Location</Text>
+                            </TouchableOpacity>
+
+                            <ChangeUserData />
+
+                        </View>
+                    </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
 
             </SafeAreaView>
