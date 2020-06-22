@@ -23,6 +23,8 @@ const Dashboard = ({ navigation }) => {
     const [location, setLocation] = useState({ latitude: 0, longitude: 0 })
     const [isModalVisible, setModalVisible] = useState(false);
     const [user, setUser] = useState('');
+    const [firstData, setFirstData] = useState([]);
+    const [secondData, setSecondData] = useState([]);
 
     // const user = navigation.getParam('user')
 
@@ -76,6 +78,28 @@ const Dashboard = ({ navigation }) => {
                 })
             }
         });
+    }, [user])
+
+    useEffect(() => {
+        return boys.doc(user).collection('14-18').onSnapshot(snapshot => {
+            let data = []
+            snapshot.forEach(doc => {
+                data.push({ ...doc.data() })
+            })
+            console.log(data)
+            setFirstData(data)
+        })
+    }, [user])
+
+    useEffect(() => {
+        return boys.doc(user).collection('19-01').onSnapshot(snapshot => {
+            let data = []
+            snapshot.forEach(doc => {
+                data.push({ ...doc.data() })
+            })
+            console.log(data)
+            setSecondData(data)
+        })
     }, [user])
 
     const handleAccept = () => {
@@ -167,6 +191,14 @@ const Dashboard = ({ navigation }) => {
         } catch (err) {
             alert(err);
         }
+    }
+
+    const setText = (time, value, day) => {
+
+        boys.doc(user).collection(time).doc(day).set({
+            ST: value
+        })
+
     }
 
     return (
@@ -282,45 +314,71 @@ const Dashboard = ({ navigation }) => {
                 <View style={[{ marginBottom: '0%', backgroundColor: '#97b54a', marginLeft: 0 }]}>
                     <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 10, textAlign: 'center', color: '#fafafa' }}>Day/Week Planner</Text>
                 </View>
-                {/* <View style={[styles.xAxis,{ marginLeft: 0,paddingHorizontal:8 }]}>
-                <Text style={[styles.text,]}>   </Text>
-                <Text style={styles.text}>Mo</Text>
-                <Text style={styles.text}>Di</Text>
-                <Text style={styles.text}>Mi</Text>
-                <Text style={styles.text}>Do</Text>
-                <Text style={styles.text}>Fr</Text>
-                <Text style={styles.text}>Sa</Text>
-                <Text style={styles.text}>So</Text>
-            </View> */}
+                <View style={[styles.xAxis, { marginLeft: 0, paddingHorizontal: 8, marginBottom: '-10%' }]}>
+                    <Text style={[styles.text,]}>   </Text>
+                    <Text style={styles.text}>Mo</Text>
+                    <Text style={styles.text}>TUE</Text>
+                    <Text style={styles.text}>WED</Text>
+                    <Text style={styles.text}>THU</Text>
+                    <Text style={styles.text}>FR</Text>
+                    <Text style={styles.text}>SA</Text>
+                    <Text style={styles.text}>SO</Text>
+                </View>
                 <View style={[styles.xAxis, { marginLeft: 0 }]}>
                     <Text style={styles.text}>14 {"\n"}  |{"\n"}18</Text>
-                    <TextInput style={styles.text} placeholder="Mo" />
-                    <TextInput style={styles.text} placeholder="TUE" />
-                    <TextInput style={styles.text} placeholder="WED" />
-                    <TextInput style={styles.text} placeholder="THU" />
-                    <TextInput style={styles.text} placeholder="FR" />
-                    <TextInput style={styles.text} placeholder="SA" />
-                    <TextInput style={styles.text} placeholder="SO" />
+                    {firstData.length > 1 ?
+                        <>
+                            <TextInput value={firstData[0]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '0')} style={styles.text} placeholder="Mo" />
+                            <TextInput value={firstData[1]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '1')} style={styles.text} placeholder="TUE" />
+                            <TextInput value={firstData[2]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '2')} style={styles.text} placeholder="WED" />
+                            <TextInput value={firstData[3]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '3')} style={styles.text} placeholder="THU" />
+                            <TextInput value={firstData[4]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '4')} style={styles.text} placeholder="FR" />
+                            <TextInput value={firstData[5]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '5')} style={styles.text} placeholder="SA" />
+                            <TextInput value={firstData[6]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '6')} style={styles.text} placeholder="SO" />
+                        </> :
+                        <>
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '0')} style={styles.text} placeholder="Mo" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '1')} style={styles.text} placeholder="TUE" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '2')} style={styles.text} placeholder="WED" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '3')} style={styles.text} placeholder="THU" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '4')} style={styles.text} placeholder="FR" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '5')} style={styles.text} placeholder="SA" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '6')} style={styles.text} placeholder="SO" />
+                        </>
+                    }
                 </View>
                 <View style={styles.divider}></View>
                 <View style={[styles.xAxis, { marginLeft: 0 }]}>
                     <Text style={[styles.text]}>19 {"\n"}  |{"\n"}01</Text>
-                    <TextInput style={styles.text} placeholder="Mo" />
-                    <TextInput style={styles.text} placeholder="TUE" />
-                    <TextInput style={styles.text} placeholder="WED" />
-                    <TextInput style={styles.text} placeholder="THU" />
-                    <TextInput style={styles.text} placeholder="FR" />
-                    <TextInput style={styles.text} placeholder="SA" />
-                    <TextInput style={styles.text} placeholder="SO" />
+                    {secondData.length > 1 ?
+                        <>
+                            <TextInput value={secondData[0]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '0')} style={styles.text} placeholder="Mo" />
+                            <TextInput value={secondData[1]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '1')} style={styles.text} placeholder="TUE" />
+                            <TextInput value={secondData[2]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '2')} style={styles.text} placeholder="WED" />
+                            <TextInput value={secondData[3]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '3')} style={styles.text} placeholder="THU" />
+                            <TextInput value={secondData[4]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '4')} style={styles.text} placeholder="FR" />
+                            <TextInput value={secondData[5]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '5')} style={styles.text} placeholder="SA" />
+                            <TextInput value={secondData[6]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '6')} style={styles.text} placeholder="SO" />
+                        </> :
+                        <>
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '0')} style={styles.text} placeholder="Mo" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '1')} style={styles.text} placeholder="TUE" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '2')} style={styles.text} placeholder="WED" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '3')} style={styles.text} placeholder="THU" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '4')} style={styles.text} placeholder="FR" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '5')} style={styles.text} placeholder="SA" />
+                            <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '6')} style={styles.text} placeholder="SO" />
+                        </>
+                    }
                 </View>
                 <View style={styles.divider}></View>
                 <View style={[styles.divider, { marginTop: '10%', backgroundColor: PrimayColor }]}></View>
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={[styles.button, { margin: 10 }]} onPress={toggleModal}>
+                    <View style={[styles.button, { margin: 10 }]}>
                         <Text style={[styles.buttonText, { fontSize: 20 }]}>
                             Incoming Request
                     </Text>
-                    </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={{ flexDirection: 'row', backgroundColor: '#3a86fc' }}>
                     <Text style={styles.tableHeading}>Order Nr</Text>
