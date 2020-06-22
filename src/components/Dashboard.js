@@ -326,33 +326,33 @@ const Dashboard = ({ navigation }) => {
                 </View>
                 <View style={[styles.xAxis, { marginLeft: 0 }]}>
                     <Text style={styles.text}>14 {"\n"}  |{"\n"}18</Text>
-                    {firstData[0] ? <TextInput value={firstData[0]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '0')} style={styles.text} placeholder="Mo" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '0')} style={styles.text} placeholder="Mo" />
+                    {firstData[0] ? <TextInput value={firstData[0]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '1')} style={styles.text} placeholder="Mo" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '1')} style={styles.text} placeholder="Mo" />
                     }
 
-                    {firstData[1] ? <TextInput value={firstData[1]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '1')} style={styles.text} placeholder="TUE" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '1')} style={styles.text} placeholder="TUE" />
+                    {firstData[1] ? <TextInput value={firstData[1]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '2')} style={styles.text} placeholder="TUE" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '2')} style={styles.text} placeholder="TUE" />
                     }
 
-                    {firstData[2] ? <TextInput value={firstData[2]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '2')} style={styles.text} placeholder="WED" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '2')} style={styles.text} placeholder="WED" />
+                    {firstData[2] ? <TextInput value={firstData[2]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '3')} style={styles.text} placeholder="WED" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '3')} style={styles.text} placeholder="WED" />
 
                     }
 
-                    {firstData[3] ? <TextInput value={firstData[3]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '3')} style={styles.text} placeholder="THU" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '3')} style={styles.text} placeholder="THU" />
+                    {firstData[3] ? <TextInput value={firstData[3]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '4')} style={styles.text} placeholder="THU" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '4')} style={styles.text} placeholder="THU" />
                     }
 
-                    {firstData[4] ? <TextInput value={firstData[4]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '4')} style={styles.text} placeholder="FR" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '4')} style={styles.text} placeholder="FR" />
+                    {firstData[4] ? <TextInput value={firstData[4]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '5')} style={styles.text} placeholder="FR" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '5')} style={styles.text} placeholder="FR" />
                     }
 
-                    {firstData[5] ? <TextInput value={firstData[5]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '5')} style={styles.text} placeholder="SA" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '5')} style={styles.text} placeholder="SA" />
+                    {firstData[5] ? <TextInput value={firstData[5]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '6')} style={styles.text} placeholder="SA" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '6')} style={styles.text} placeholder="SA" />
                     }
 
-                    {firstData[6] ? <TextInput value={firstData[6]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '6')} style={styles.text} placeholder="SO" /> :
-                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '6')} style={styles.text} placeholder="SO" />
+                    {firstData[6] ? <TextInput value={firstData[6]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '7')} style={styles.text} placeholder="SO" /> :
+                        <TextInput keyboardType={'number-pad'} onChangeText={value => setText('14-18', value, '7')} style={styles.text} placeholder="SO" />
                     }
 
 
@@ -362,26 +362,26 @@ const Dashboard = ({ navigation }) => {
                     <Text style={[styles.text]}>19 {"\n"}  |{"\n"}01</Text>
 
 
-                    {secondData[0] ? <TextInput value={secondData[0]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '0')} style={styles.text} placeholder="Mo" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '0')} style={styles.text} placeholder="Mo" />
+                    {secondData[0] ? <TextInput value={secondData[0]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '1')} style={styles.text} placeholder="Mo" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '1')} style={styles.text} placeholder="Mo" />
                     }
-                    {secondData[1] ? <TextInput value={secondData[1]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '1')} style={styles.text} placeholder="TUE" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '1')} style={styles.text} placeholder="TUE" />
+                    {secondData[1] ? <TextInput value={secondData[1]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '2')} style={styles.text} placeholder="TUE" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '2')} style={styles.text} placeholder="TUE" />
                     }
-                    {secondData[2] ? <TextInput value={secondData[2]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '2')} style={styles.text} placeholder="WED" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '2')} style={styles.text} placeholder="WED" />
+                    {secondData[2] ? <TextInput value={secondData[2]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '3')} style={styles.text} placeholder="WED" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '3')} style={styles.text} placeholder="WED" />
                     }
-                    {secondData[3] ? <TextInput value={secondData[3]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '3')} style={styles.text} placeholder="THU" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '3')} style={styles.text} placeholder="THU" />
+                    {secondData[3] ? <TextInput value={secondData[3]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '4')} style={styles.text} placeholder="THU" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '4')} style={styles.text} placeholder="THU" />
                     }
-                    {secondData[4] ? <TextInput value={secondData[4]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '4')} style={styles.text} placeholder="FR" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '4')} style={styles.text} placeholder="FR" />
+                    {secondData[4] ? <TextInput value={secondData[4]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '5')} style={styles.text} placeholder="FR" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '5')} style={styles.text} placeholder="FR" />
                     }
-                    {secondData[5] ? <TextInput value={secondData[5]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '5')} style={styles.text} placeholder="SA" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '5')} style={styles.text} placeholder="SA" />
+                    {secondData[5] ? <TextInput value={secondData[5]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '6')} style={styles.text} placeholder="SA" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '6')} style={styles.text} placeholder="SA" />
                     }
-                    {secondData[6] ? <TextInput value={secondData[6]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '6')} style={styles.text} placeholder="SO" />
-                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '6')} style={styles.text} placeholder="SO" />
+                    {secondData[6] ? <TextInput value={secondData[6]['ST']} keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '7')} style={styles.text} placeholder="SO" />
+                        : <TextInput keyboardType={'number-pad'} onChangeText={value => setText('19-01', value, '7')} style={styles.text} placeholder="SO" />
                     }
 
 
