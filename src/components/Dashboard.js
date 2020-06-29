@@ -5,7 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Modal from 'react-native-modal';
 import { Switch } from 'react-native-switch';
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 const PrimayColor = '#D87314'
 
 const boys = firestore().collection('Boys');
@@ -69,6 +69,7 @@ const Dashboard = ({ navigation }) => {
                 data.push({ ...doc.data() })
             })
             setIncomingOrder(data);
+            // console.log(data)
             if (data.length > 0) {
                 orders.doc(data[0].number.toString()).get().then(snapshot => {
                     accepted = snapshot.data().accepted
@@ -86,7 +87,7 @@ const Dashboard = ({ navigation }) => {
             snapshot.forEach(doc => {
                 data.push({ ...doc.data() })
             })
-            console.log(data)
+            // console.log(data)
             setFirstData(data)
         })
     }, [user])
@@ -97,7 +98,7 @@ const Dashboard = ({ navigation }) => {
             snapshot.forEach(doc => {
                 data.push({ ...doc.data() })
             })
-            console.log(data)
+            // console.log(data)
             setSecondData(data)
         })
     }, [user])
@@ -167,7 +168,8 @@ const Dashboard = ({ navigation }) => {
         setRejected(!rejected);
         handleReject();
     }
-    const openMap = async () => {
+    const openMap = async (lat, long) => {
+
         try {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -183,7 +185,7 @@ const Dashboard = ({ navigation }) => {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 Geolocation.getCurrentPosition(position => {
                     // setLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
-                    Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${position.coords.latitude},${position.coords.longitude}&destination=${position.coords.latitude + 0.02},${position.coords.longitude + 0.02}`)
+                    Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${position.coords.latitude},${position.coords.longitude}&destination=${lat},${long}`)
                 });
             } else {
                 Alert.alert('Please grant location permission');
@@ -259,7 +261,7 @@ const Dashboard = ({ navigation }) => {
                 />
             </View> */}
 
-                <View style={{ marginTop: 15, alignItems: 'center', }}>
+                <View style={{ marginTop: 15, alignItems: 'center', marginBottom: 15 }}>
                     <Switch
                         onValueChange={toggleSwitch}
                         value={isEnabled}
@@ -270,11 +272,11 @@ const Dashboard = ({ navigation }) => {
                         barHeight={35}
                         circleBorderWidth={1}
                         backgroundActive={'#a7eb9b'}
-                        backgroundInactive={'#a7eb9b'}
+                        backgroundInactive={'#f7867e'}
                         circleActiveColor={'#57d941'}
-                        circleInActiveColor={'#57d941'}
+                        circleInActiveColor={'red'}
                         changeValueImmediately={true}
-                        renderInsideCircle={() => <Text style={{ color: '#fafafa', fontSize: 11 }}>ON</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
+                        renderInsideCircle={() => isEnabled ? <Text style={{ color: '#fafafa', fontSize: 11 }}>ON</Text> : <Text style={{ color: '#fafafa', fontSize: 11 }}>OFF</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
                         changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
                         innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
                         renderActiveText={false}
@@ -286,7 +288,7 @@ const Dashboard = ({ navigation }) => {
 
                     />
                 </View>
-                <View style={{ marginTop: 15, alignItems: 'center', marginBottom: 10 }}>
+                {/* <View style={{ marginTop: 15, alignItems: 'center', marginBottom: 10 }}>
                     <Switch
                         onValueChange={toggleSwitch}
                         value={!isEnabled}
@@ -310,7 +312,7 @@ const Dashboard = ({ navigation }) => {
                         switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
 
                     />
-                </View>
+                </View> */}
                 <View style={[{ marginBottom: '0%', backgroundColor: '#97b54a', marginLeft: 0 }]}>
                     <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 10, textAlign: 'center', color: '#fafafa' }}>Day/Week Planner</Text>
                 </View>
@@ -410,7 +412,7 @@ const Dashboard = ({ navigation }) => {
                                 <Text style={styles.tableRow}>{item.time} hrs</Text>
                                 <Text style={styles.tableRow}>{item.serviceTime} hrs</Text>
                                 <TouchableOpacity
-                                    onPress={openMap}
+                                    onPress={() => openMap(item.lat, item.long)}
                                     style={{
                                         flex: 1,
                                         borderWidth: 2,
