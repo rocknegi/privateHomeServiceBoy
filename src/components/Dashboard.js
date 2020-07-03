@@ -68,16 +68,17 @@ const Dashboard = ({ navigation }) => {
             snapshot.forEach(doc => {
                 data.push({ ...doc.data() })
             })
-            setIncomingOrder(data);
-            // console.log(data)
-            if (data.length > 0) {
-                orders.doc(data[0].number.toString()).get().then(snapshot => {
-                    accepted = snapshot.data().accepted
-                    // if (data.length > 0 && !accepted) alert(action)
-                    // else alert(action)
+            setIncomingOrder(data)
+            // setIncomingOrder(JSON.parse(data[0][0]));
+            // console.log((JSON.parse(data[0][0])))
+            // if (data.length > 0) {
+            //     orders.doc(data[0].number.toString()).get().then(snapshot => {
+            //         accepted = snapshot.data().accepted
+            //         // if (data.length > 0 && !accepted) alert(action)
+            //         // else alert(action)
 
-                })
-            }
+            //     })
+            // }
         });
     }, [user])
 
@@ -409,8 +410,8 @@ const Dashboard = ({ navigation }) => {
                         {incomingOrder.map(item => (
                             <View style={{ flexDirection: 'row', backgroundColor: '#a8caff' }} key={item.time}>
                                 <Text style={styles.tableRow}>{item.orderNo}</Text>
-                                <Text style={styles.tableRow}>{item.time} hrs</Text>
-                                <Text style={styles.tableRow}>{item.serviceTime} hrs</Text>
+                                <Text style={styles.tableRow}>{item.deliveryTime} hrs</Text>
+                                <Text style={styles.tableRow}>{item.serviceDuration} hrs</Text>
                                 <TouchableOpacity
                                     onPress={() => openMap(item.lat, item.long)}
                                     style={{
