@@ -70,7 +70,7 @@ const Dashboard = ({ navigation }) => {
             })
             setIncomingOrder(data)
             // setIncomingOrder(JSON.parse(data[0][0]));
-            // console.log((JSON.parse(data[0][0])))
+            // console.log(data)
             // if (data.length > 0) {
             //     orders.doc(data[0].number.toString()).get().then(snapshot => {
             //         accepted = snapshot.data().accepted
@@ -108,7 +108,8 @@ const Dashboard = ({ navigation }) => {
         // setAction(false);
         // alert(accepted)
         if (incomingOrder.length > 0 && !accepted) {
-            orders.doc(incomingOrder[0].number.toString()).update({
+            console.log(incomingOrder)
+            orders.doc(incomingOrder[0].phoneNo.toString()).update({
                 // ...incomingOrder[0],
                 accepted: true
             });
@@ -117,10 +118,10 @@ const Dashboard = ({ navigation }) => {
                 // ...incomingOrder[0],
                 FBK: true
             });
-            // toggleReject()
+            // // toggleReject()
         }
         else {
-            orders.doc(incomingOrder[0].number.toString()).update({
+            orders.doc(incomingOrder[0].phoneNo.toString()).update({
                 // ...incomingOrder[0],
                 accepted: false
             });
@@ -136,7 +137,7 @@ const Dashboard = ({ navigation }) => {
     }
     const handleReject = () => {
         if (incomingOrder.length > 0 && !rejected) {
-            orders.doc(incomingOrder[0].number.toString()).update({
+            orders.doc(incomingOrder[0].phoneNo.toString()).update({
                 // ...incomingOrder[0],
                 accepted: false
             });
